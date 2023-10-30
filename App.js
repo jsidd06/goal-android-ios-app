@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
   Button,
-  ScrollView,
+  FlatList,
   StyleSheet,
   Text,
   TextInput,
@@ -15,7 +15,10 @@ export default function App() {
     setEnterGoal(text);
   }
   function submitGoalsHandler() {
-    setAllEnteredGoal((pres) => [...pres, enterGoal]);
+    setAllEnteredGoal((pres) => [
+      ...pres,
+      { goal: enterGoal, id: Math.random().toString() },
+    ]);
     setEnterGoal("");
   }
   return (
@@ -30,13 +33,20 @@ export default function App() {
         <Button title="Add Goal" onPress={submitGoalsHandler} />
       </View>
       <View style={styles.textContainer}>
-        <ScrollView alwaysBounceVertical={false}>
-          {allEnteredGoal.map((goal, index) => (
-            <View key={index} style={styles.goalContainer}>
-              <Text>{goal}</Text>
-            </View>
-          ))}
-        </ScrollView>
+        <FlatList
+          alwaysBounceVertical={false}
+          data={allEnteredGoal}
+          renderItem={(item) => {
+            return (
+              <View style={styles.goalContainer}>
+                <Text>{item.item.goal}</Text>
+              </View>
+            );
+          }}
+          keyExtractor={(item, index) => {
+            return item.id;
+          }}
+        />
       </View>
     </View>
   );
