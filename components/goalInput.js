@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Modal,
   Platform,
@@ -15,8 +16,12 @@ const GoalInput = (props) => {
     setEnterGoal(text);
   }
   const addHandler = () => {
-    props.addGoal(enterGoal);
-    setEnterGoal("");
+    if (enterGoal.length > 0) {
+      props.addGoal(enterGoal);
+      setEnterGoal("");
+    } else {
+      Alert.alert("Please enter some input");
+    }
   };
   return (
     <Modal visible={props.isVisible} animationType="fade">
